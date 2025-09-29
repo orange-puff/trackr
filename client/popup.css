@@ -1,0 +1,159 @@
+body {
+    font-family: system-ui, sans-serif;
+    width: 300px;
+    min-height: 400px;
+    margin: 0;
+    padding: 15px;
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    font-size: 18px;
+    color: #333;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    display: flex;
+    margin: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    color: #666;
+}
+
+.tab-btn.active {
+    color: #4CAF50;
+    border-bottom-color: #4CAF50;
+    font-weight: bold;
+}
+
+.tab-btn:hover {
+    background-color: #f5f5f5;
+    color: #4CAF50;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    text-align: left;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    color: #333;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.error {
+    color: #ff0000;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.success {
+    color: #008000;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+/* Tracked Sites */
+.tracked-sites {
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.tracked-sites h3 {
+    font-size: 14px;
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.site-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.site-name {
+    flex: 1;
+    word-break: break-all;
+}
+
+.remove-btn {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 2px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    width: auto;
+    min-width: 20px;
+    height: 20px;
+    line-height: 16px;
+    margin-left: 8px;
+}
+
+.remove-btn:hover {
+    background-color: #cc0000;
+}

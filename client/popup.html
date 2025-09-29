@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackr</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Trackr</h1>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn" data-tab="overview">Overview</button>
+            <button class="tab-btn active" data-tab="tracking">Tracking</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content">
+            <p>Welcome to Trackr! Use the Tracking tab to manage your monitored websites.</p>
+        </div>
+
+        <!-- Tracking Tab -->
+        <div id="tracking" class="tab-content active">
+            <form id="trackingForm">
+                <div class="form-group">
+                    <label for="websiteName">Website URL or Name:</label>
+                    <input type="text" id="websiteName" name="websiteName" placeholder="e.g., example.com" required>
+                    <div id="validation-message" class="error" style="display: none;"></div>
+                </div>
+
+                <button type="submit">Add Website</button>
+                <div id="success-message" class="success" style="display: none;"></div>
+            </form>
+
+            <div class="tracked-sites">
+                <h3>Tracked Websites:</h3>
+                <div id="sitesList">
+                    <!-- Tracked sites will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>
