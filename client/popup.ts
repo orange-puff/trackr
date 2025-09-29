@@ -1,13 +1,18 @@
-document.addEventListener('DOMContentLoaded', function() {
+// Import types and utilities
+import type { Message } from './types.js';
+import { normalizeWebsiteName } from './utils.js';
+
+document.addEventListener('DOMContentLoaded', function(): void {
     console.log('Trackr extension loaded');
 
     // Tab switching functionality
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
+    const tabBtns = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+    const tabContents = document.querySelectorAll<HTMLElement>('.tab-content');
 
     tabBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(): void {
             const targetTab = this.getAttribute('data-tab');
+            if (!targetTab) return;
 
             // Remove active class from all tabs and buttons
             tabBtns.forEach(b => b.classList.remove('active'));
@@ -15,7 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Add active class to clicked button and corresponding content
             this.classList.add('active');
-            document.getElementById(targetTab).classList.add('active');
+            const targetElement = document.getElementById(targetTab);
+            if (targetElement) {
+                targetElement.classList.add('active');
+            }
 
             // Load tracked sites when switching to tracking tab
             if (targetTab === 'tracking') {
@@ -25,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Tracking functionality
-    const form = document.getElementById('trackingForm');
-    const websiteInput = document.getElementById('websiteName');
+    const form = document.getElementById('trackingForm') as HTMLFormElement;
+    const websiteInput = document.getElementById('websiteName') as HTMLInputElement;
     const validationMessage = document.getElementById('validation-message');
     const successMessage = document.getElementById('success-message');
     const sitesList = document.getElementById('sitesList');
@@ -36,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form submission handler
     if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function(e: Event): void {
             e.preventDefault();
 
             const websiteName = websiteInput.value.trim();
@@ -48,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Website name validation function
-    function validateWebsiteName(input) {
+    function validateWebsiteName(input: string): boolean {
         // Clear previous messages
         hideMessage(validationMessage);
         hideMessage(successMessage);
@@ -72,13 +80,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Add website to browser storage
-    function addWebsiteToStorage(websiteName) {
+    function addWebsiteToStorage(websiteName: string): void {
         // Normalize the website name (remove protocol, www, trailing slash)
         const normalizedName = normalizeWebsiteName(websiteName);
 
         // Get existing tracked sites
-        browser.storage.local.get(['trackedSites']).then(function(result) {
-            let trackedSites = result.trackedSites || [];
+        browser.storage.local.get(['trackedSites']).then(function(result): void {
+            let trackedSites: string[] = result.trackedSites || [];
 
             // Check if site is already tracked
             if (trackedSites.includes(normalizedName)) {
@@ -90,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             trackedSites.push(normalizedName);
 
             // Save to storage
-            browser.storage.local.set({ trackedSites: trackedSites }).then(function() {
+            browser.storage.local.set({ trackedSites: trackedSites }).then(function(): void {
                 showMessage(successMessage, 'Website added successfully!');
                 websiteInput.value = '';
                 loadTrackedSites(); // Refresh the list
@@ -99,56 +107,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 browser.runtime.sendMessage({
                     action: 'websiteAdded',
                     website: normalizedName
-                }).then((response) => {
+                } as Message).then((response: any) => {
                     console.log('Background script notified of new website:', response);
-                }).catch((error) => {
+                }).catch((error: Error) => {
                     console.error('Error notifying background script:', error);
                 });
 
                 // Hide success message after 3 seconds
                 setTimeout(() => hideMessage(successMessage), 3000);
             });
-        }).catch(function(error) {
+        }).catch(function(error: Error): void {
             console.error('Error saving to storage:', error);
             showMessage(validationMessage, 'Error saving website. Please try again.');
         });
     }
 
-    // Normalize website name using URL object
-    function normalizeWebsiteName(input) {
-        try {
-            // Add protocol if missing for URL parsing
-            let urlString = input;
-            if (!input.startsWith('http://') && !input.startsWith('https://')) {
-                urlString = 'https://' + input;
-            }
-
-            const url = new URL(urlString);
-            return url.hostname.replace(/^www\./, '').toLowerCase();
-        } catch (e) {
-            // Fallback to regex-based approach for invalid URLs
-            return input
-                .toLowerCase()
-                .replace(/^https?:\/\//, '') // Remove protocol
-                .replace(/^www\./, '')       // Remove www
-                .replace(/\/$/, '');         // Remove trailing slash
-        }
-    }
 
     // Load and display tracked sites
-    function loadTrackedSites() {
+    function loadTrackedSites(): void {
         if (!sitesList) return;
 
-        browser.storage.local.get(['trackedSites']).then(function(result) {
-            const trackedSites = result.trackedSites || [];
+        browser.storage.local.get(['trackedSites']).then(function(result): void {
+            const trackedSites: string[] = result.trackedSites || [];
             displayTrackedSites(trackedSites);
-        }).catch(function(error) {
+        }).catch(function(error: Error): void {
             console.error('Error loading tracked sites:', error);
         });
     }
 
     // Display tracked sites in the list
-    function displayTrackedSites(sites) {
+    function displayTrackedSites(sites: string[]): void {
         if (!sitesList) return;
 
         sitesList.innerHTML = '';
@@ -158,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        sites.forEach(function(site, index) {
+        sites.forEach(function(site: string, index: number): void {
             const siteItem = document.createElement('div');
             siteItem.className = 'site-item';
 
@@ -167,45 +155,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="remove-btn" data-index="${index}">×</button>
             `;
 
-            sitesList.appendChild(siteItem);
+            sitesList!.appendChild(siteItem);
         });
 
         // Add event listeners for remove buttons
-        const removeButtons = sitesList.querySelectorAll('.remove-btn');
-        removeButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                const index = parseInt(this.getAttribute('data-index'));
-                removeWebsiteFromStorage(index);
+        const removeButtons = sitesList.querySelectorAll<HTMLButtonElement>('.remove-btn');
+        removeButtons.forEach(function(button: HTMLButtonElement): void {
+            button.addEventListener('click', function(): void {
+                const indexStr = this.getAttribute('data-index');
+                if (indexStr !== null) {
+                    const index = parseInt(indexStr);
+                    removeWebsiteFromStorage(index);
+                }
             });
         });
     }
 
     // Remove website from storage
-    function removeWebsiteFromStorage(index) {
-        browser.storage.local.get(['trackedSites']).then(function(result) {
-            let trackedSites = result.trackedSites || [];
+    function removeWebsiteFromStorage(index: number): void {
+        browser.storage.local.get(['trackedSites']).then(function(result): void {
+            let trackedSites: string[] = result.trackedSites || [];
 
             if (index >= 0 && index < trackedSites.length) {
                 trackedSites.splice(index, 1);
 
-                browser.storage.local.set({ trackedSites: trackedSites }).then(function() {
+                browser.storage.local.set({ trackedSites: trackedSites }).then(function(): void {
                     loadTrackedSites(); // Refresh the list
                 });
             }
-        }).catch(function(error) {
+        }).catch(function(error: Error): void {
             console.error('Error removing website from storage:', error);
         });
     }
 
     // Utility functions
-    function showMessage(element, message) {
+    function showMessage(element: HTMLElement | null, message: string): void {
         if (element) {
             element.textContent = message;
             element.style.display = 'block';
         }
     }
 
-    function hideMessage(element) {
+    function hideMessage(element: HTMLElement | null): void {
         if (element) {
             element.style.display = 'none';
         }

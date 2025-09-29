@@ -11,7 +11,8 @@
   ],
 
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["dist/background.js"],
+    "type": "module",
     "persistent": true
   },
 

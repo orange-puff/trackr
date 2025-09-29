@@ -1,0 +1,24 @@
+{
+  "name": "trackr-extension",
+  "version": "1.0.0",
+  "description": "A Firefox extension for tracking website usage",
+  "main": "dist/background.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^18.0.0"
+  },
+  "keywords": [
+    "firefox",
+    "extension",
+    "typescript",
+    "website-tracking"
+  ],
+  "author": "",
+  "license": "MIT"
+}
