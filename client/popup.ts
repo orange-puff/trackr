@@ -2,15 +2,15 @@
 import type { Message } from './types.js';
 import { normalizeWebsiteName } from './utils.js';
 
-document.addEventListener('DOMContentLoaded', function(): void {
-    console.log('Trackr extension loaded');
+document.addEventListener('DOMContentLoaded', function (): void {
+    console.log('Trackr extension loaded!');
 
     // Tab switching functionality
     const tabBtns = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
     const tabContents = document.querySelectorAll<HTMLElement>('.tab-content');
 
     tabBtns.forEach(btn => {
-        btn.addEventListener('click', function(): void {
+        btn.addEventListener('click', function (): void {
             const targetTab = this.getAttribute('data-tab');
             if (!targetTab) return;
 
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function(): void {
 
     // Form submission handler
     if (form) {
-        form.addEventListener('submit', function(e: Event): void {
+        form.addEventListener('submit', function (e: Event): void {
             e.preventDefault();
 
             const websiteName = websiteInput.value.trim();
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function(): void {
         const normalizedName = normalizeWebsiteName(websiteName);
 
         // Get existing tracked sites
-        browser.storage.local.get(['trackedSites']).then(function(result): void {
+        browser.storage.local.get(['trackedSites']).then(function (result): void {
             let trackedSites: string[] = result.trackedSites || [];
 
             // Check if site is already tracked
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function(): void {
             trackedSites.push(normalizedName);
 
             // Save to storage
-            browser.storage.local.set({ trackedSites: trackedSites }).then(function(): void {
+            browser.storage.local.set({ trackedSites: trackedSites }).then(function (): void {
                 showMessage(successMessage, 'Website added successfully!');
                 websiteInput.value = '';
                 loadTrackedSites(); // Refresh the list
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function(): void {
                 // Hide success message after 3 seconds
                 setTimeout(() => hideMessage(successMessage), 3000);
             });
-        }).catch(function(error: Error): void {
+        }).catch(function (error: Error): void {
             console.error('Error saving to storage:', error);
             showMessage(validationMessage, 'Error saving website. Please try again.');
         });
@@ -127,10 +127,10 @@ document.addEventListener('DOMContentLoaded', function(): void {
     function loadTrackedSites(): void {
         if (!sitesList) return;
 
-        browser.storage.local.get(['trackedSites']).then(function(result): void {
+        browser.storage.local.get(['trackedSites']).then(function (result): void {
             const trackedSites: string[] = result.trackedSites || [];
             displayTrackedSites(trackedSites);
-        }).catch(function(error: Error): void {
+        }).catch(function (error: Error): void {
             console.error('Error loading tracked sites:', error);
         });
     }
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function(): void {
             return;
         }
 
-        sites.forEach(function(site: string, index: number): void {
+        sites.forEach(function (site: string, index: number): void {
             const siteItem = document.createElement('div');
             siteItem.className = 'site-item';
 
@@ -160,8 +160,8 @@ document.addEventListener('DOMContentLoaded', function(): void {
 
         // Add event listeners for remove buttons
         const removeButtons = sitesList.querySelectorAll<HTMLButtonElement>('.remove-btn');
-        removeButtons.forEach(function(button: HTMLButtonElement): void {
-            button.addEventListener('click', function(): void {
+        removeButtons.forEach(function (button: HTMLButtonElement): void {
+            button.addEventListener('click', function (): void {
                 const indexStr = this.getAttribute('data-index');
                 if (indexStr !== null) {
                     const index = parseInt(indexStr);
@@ -173,17 +173,17 @@ document.addEventListener('DOMContentLoaded', function(): void {
 
     // Remove website from storage
     function removeWebsiteFromStorage(index: number): void {
-        browser.storage.local.get(['trackedSites']).then(function(result): void {
+        browser.storage.local.get(['trackedSites']).then(function (result): void {
             let trackedSites: string[] = result.trackedSites || [];
 
             if (index >= 0 && index < trackedSites.length) {
                 trackedSites.splice(index, 1);
 
-                browser.storage.local.set({ trackedSites: trackedSites }).then(function(): void {
+                browser.storage.local.set({ trackedSites: trackedSites }).then(function (): void {
                     loadTrackedSites(); // Refresh the list
                 });
             }
-        }).catch(function(error: Error): void {
+        }).catch(function (error: Error): void {
             console.error('Error removing website from storage:', error);
         });
     }

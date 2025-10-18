@@ -1,33 +1,5 @@
 # Trackr - Firefox Extension
 
-A Firefox browser extension built with TypeScript for tracking website usage.
-
-## 🔥 Features
-
-- **Website Tracking**: Add and manage websites to track usage
-- **Tab Monitoring**: Automatically detects when tracked websites are visited
-- **Persistent Storage**: Saves tracked websites in browser storage
-- **Background Processing**: Runs intervals to track time spent on sites
-- **TypeScript**: Built with TypeScript for better type safety and development experience
-- **Responsive Design**: Clean popup interface
-
-## 📁 Project Structure
-
-```
-├── manifest.json       # Extension configuration
-├── popup.html         # Main popup interface
-├── popup.css          # Popup styling
-├── popup.ts           # Popup functionality (TypeScript)
-├── background.ts      # Background script (TypeScript)
-├── types.ts           # Shared TypeScript types and interfaces
-├── utils.ts           # Shared utility functions
-├── tsconfig.json      # TypeScript configuration
-├── package.json       # Node.js dependencies and build scripts
-├── dist/              # Compiled JavaScript files
-├── .gitignore         # Git ignore rules
-└── README.md          # This file
-```
-
 ## 🛠️ Development Setup
 
 ### Prerequisites

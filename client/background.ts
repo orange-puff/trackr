@@ -90,4 +90,4 @@ browser.tabs.onRemoved.addListener((tabId: number) => {
     // during their next execution cycle
 });
 
-console.log('Background script initialization complete');
+console.log('Background script initialization complete!');
